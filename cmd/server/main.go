@@ -108,13 +108,13 @@ func handleMulipartFormData(w http.ResponseWriter, r *http.Request) {
 		})
 
 	default:
-		http.Error(w, "files must have .adi or .adij file extension", http.StatusUnsupportedMediaType)
+		http.Error(w, "files must have an .adi or .adij file extension", http.StatusUnsupportedMediaType)
 	}
 }
 
-func convertAdi(w http.ResponseWriter, file io.Reader, beforeWriteCallback func(w http.ResponseWriter)) {
+func convertAdi(w http.ResponseWriter, r io.Reader, beforeWriteCallback func(w http.ResponseWriter)) {
 	doc := adif.NewDocument()
-	if _, err := doc.ReadFrom(file); err != nil {
+	if _, err := doc.ReadFrom(r); err != nil {
 		http.Error(w, "unable to read adi input", http.StatusBadRequest)
 		return
 	}
@@ -128,9 +128,9 @@ func convertAdi(w http.ResponseWriter, file io.Reader, beforeWriteCallback func(
 	}
 }
 
-func convertAdij(w http.ResponseWriter, file io.Reader, beforeWriteCallback func(w http.ResponseWriter)) {
+func convertAdij(w http.ResponseWriter, r io.Reader, beforeWriteCallback func(w http.ResponseWriter)) {
 	var doc adif.Document
-	if err := json.NewDecoder(file).Decode(&doc); err != nil {
+	if err := json.NewDecoder(r).Decode(&doc); err != nil {
 		http.Error(w, "invalid json input", http.StatusBadRequest)
 		return
 	}
