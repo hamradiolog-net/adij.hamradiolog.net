@@ -168,15 +168,17 @@
                 <p>Convert ADIF data directly in the request body using specific content types:</p>
 
                 <h4>Convert ADI to JSON</h4>
-                <kbd>POST / Content-Type: application/x-adif-adi</kbd>
+                <kbd>POST <span class="base-url">http://127.0.0.1:8080/</span> Content-Type:
+                    application/x-adif-adi</kbd>
                 <p>Send an ADI document in the request body to convert it to JSON.</p>
 
                 <h4>Convert JSON to ADI</h4>
-                <kbd>POST / Content-Type: application/x-adif-json</kbd>
+                <kbd>POST <span class="base-url">http://127.0.0.1:8080/</span> Content-Type:
+                    application/x-adif-json</kbd>
                 <p>Send a JSON document in the request body to convert it to ADI.</p>
 
                 <h3>File Upload Conversion</h3>
-                <kbd>POST / (multipart/form-data)</kbd>
+                <kbd>POST <span class="base-url">http://127.0.0.1:8080/</span> (multipart/form-data)</kbd>
                 <p>
                     Upload a file to convert between ADIF formats. The multipart form data must include a field named
                     <code>"file"</code> containing the uploaded file.
@@ -199,35 +201,35 @@
                     <article>
                         <header>ADI to JSON</header>
                         <kbd id="curl-simple-adi">curl -X POST -H "Content-Type: application/x-adif-adi" <span
-                                class="url-placeholder">http://127.0.0.1:8080/</span> --data-binary @logfile.adi</kbd>
+                                class="base-url">http://127.0.0.1:8080/</span> --data-binary @logfile.adi</kbd>
                         <small>Convert ADI content to JSON</small>
                     </article>
                     <article>
                         <header>JSON to ADI</header>
                         <kbd id="curl-simple-json">curl -X POST -H "Content-Type: application/x-adif-json" <span
-                                class="url-placeholder">http://127.0.0.1:8080/</span> --data-binary @logfile.json</kbd>
+                                class="base-url">http://127.0.0.1:8080/</span> --data-binary @logfile.json</kbd>
                         <small>Convert JSON content to ADI</small>
                     </article>
                     <article>
                         <header>Multipart File Upload - ADI Conversion</header>
-                        <kbd id="curl-adi">curl -X POST <span class="url-placeholder">http://127.0.0.1:8080/</span> -F
+                        <kbd id="curl-adi">curl -X POST <span class="base-url">http://127.0.0.1:8080/</span> -F
                             "file=@logfile.adi"</kbd>
                         <small>Convert .ADI file to .ADIJ</small>
                     </article>
                     <article>
                         <header>Multipart File Upload - ADIJ Conversion</header>
-                        <kbd id="curl-adij">curl -X POST <span class="url-placeholder">http://127.0.0.1:8080/</span> -F
+                        <kbd id="curl-adij">curl -X POST <span class="base-url">http://127.0.0.1:8080/</span> -F
                             "file=@logfile.adij"</kbd>
                         <small>Convert .ADIJ file to .ADI</small>
                     </article>
                 </div>
                 <script>
-                    // Update curl commands with current URL
+                    // Update all base URLs with current host
                     const baseUrl = window.location.origin;
-                    document.getElementById('curl-simple-adi').innerHTML = `curl -X POST -H "Content-Type: application/x-adif-adi" ${baseUrl}/ --data-binary @logfile.adi`;
-                    document.getElementById('curl-simple-json').innerHTML = `curl -X POST -H "Content-Type: application/x-adif-json" ${baseUrl}/ --data-binary @logfile.json`;
-                    document.getElementById('curl-adi').innerHTML = `curl -X POST ${baseUrl}/ -F "file=@logfile.adi"`;
-                    document.getElementById('curl-adij').innerHTML = `curl -X POST ${baseUrl}/ -F "file=@logfile.adij"`;
+                    const baseUrlElements = document.querySelectorAll('.base-url');
+                    baseUrlElements.forEach(element => {
+                        element.textContent = `${baseUrl}/`;
+                    });
                 </script>
             </article>
         </details>
