@@ -16,3 +16,4 @@ Related:
 
 - [World's Fastest ADIF Parser](https://github.com/hamradiolog-net/adif)
 - [Go ADIF Specification](https://github.com/hamradiolog-net/adif-spec)
+- [hamradiolog-net/adif-benchmark](https://github.com/hamradiolog-net/adif-benchmark): ADIF Parsing Benchmarks
