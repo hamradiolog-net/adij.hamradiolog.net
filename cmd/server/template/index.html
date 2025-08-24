@@ -20,6 +20,20 @@
         <p>Lets improve the standard so that it doesn't require a PhD just to parse a log file.
             Something like JSON, the world's most ubiquitous data interchange format, ought to do!</p>
         <details>
+            <summary role="button" class="secondary">Try It Now - Live Demo!</summary>
+            <article>
+                <p>Convert ADI to ADIJ and ADIJ to ADI with this online tool:</p>
+                <form method="POST" enctype="multipart/form-data">
+                    <fieldset>
+                        <label for="file">Select a file to convert:</label>
+                        <input type="file" id="file" name="file" accept=".adi,.adij" required>
+                        <small>Supported extensions: .adi and .adij</small>
+                    </fieldset>
+                    <button type="submit">Convert</button>
+                </form>
+            </article>
+        </details>
+        <details>
             <summary role="button" class="secondary">ADIF as JSON Specification</summary>
             <article>
                 <header>
@@ -100,20 +114,6 @@
                 </ul>
             </article>
         </details>
-        <details open>
-            <summary role="button" class="secondary">Try It Now - Live Demo!</summary>
-            <article>
-                <p>Convert ADI to ADIJ and ADIJ to ADI with this online tool:</p>
-                <form method="POST" enctype="multipart/form-data">
-                    <fieldset>
-                        <label for="file">Select a file to convert:</label>
-                        <input type="file" id="file" name="file" accept=".adi,.adij" required>
-                        <small>Supported extensions: .adi and .adij</small>
-                    </fieldset>
-                    <button type="submit">Convert</button>
-                </form>
-            </article>
-        </details>
         <details>
             <summary role="button" class="secondary">ADIF as JSON Samples</summary>
             <article>
@@ -164,8 +164,7 @@
             <article>
                 <h2>API Endpoints</h2>
 
-                <h3>Simple API Conversion</h3>
-                <p>Convert ADIF data directly in the request body using specific content types:</p>
+                <p>This website provides a simple API for converting ADIF data between ADI and ADIJ formats.</p>
 
                 <h4>Convert ADI to JSON</h4>
                 <kbd>POST <span class="base-url">http://127.0.0.1:8080/</span> Content-Type:
