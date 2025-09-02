@@ -242,12 +242,18 @@
                 <ul>
                     <li>Why choose UTF-8?
                         <ul>
-                            <li>The ADIF spec already uses UTF-8 in XML. To keep it simple, we avoid introducing new encodings.</li>
+                            <li>
+                                The ADIF spec utilizes UTF-8 in XML.
+                                To keep it simple, we avoid introducing new encodings.
+                            </li>
                             <li>ASCII is fully forward compatible with UTF-8.</li>
-                            <li>ADIF supports UTF-8 in XML documents.</li>
                             <li>The JSON RFC requires the use of UTF-8.</li>
                             <li>Existing ADI parsers will be able to navigate a UTF-8 based structure corectly.</li>
-                            <li>Existing ADI software MAY show "garbled" characters if they process an ADI file with UTF-8. This is an acceptable risk. They are unlikely to corrupt the data because they'll see it as an ASCII byte stream and preserve the characters.</li>
+                            <li>
+                                Existing ADI software MAY show "garbled" characters if they process an ADI file with UTF-8.
+                                This is an acceptable risk.
+                                They are unlikely to corrupt the data because they'll assume it as an ASCII byte stream and preserve the characters, unchanged.
+                            </li>
                         </ul>
                     </li>
                     <li>Why are all values stored as strings instead of being strongly typed?
@@ -268,11 +274,20 @@
                         <ul>
                             <li>_INTL fields are only present in ADIF XML documents. Programs converting from XML to ADI must already account for this fact.</li>
                             <li>Removing _INTL fields makes converting between ADI and ADIJ very simple.</li>
-                            <li>ADIF has no backwards compatability guarantee. It only has a forward compatability guarantee.</li>
+                            <li>
+                                ADIF has NO backwards compatability guarantee.
+                                It DOES have a forward compatability guarantee.
+                            </li>
                             <li>ADIF has a long history of depreciating fields that have lost their relevance.</li>
                             <li>All modern programming languages support UTF-8</li>
-                            <li>ADI Files produced by ASCII only software will work correctly with software implementing ADIJ. This meets the ADIF forward compatibility guarantee.</li>
-                            <li>New, UTF-8 Files ingested by older software may display some strings incorrectly. They will, however, be able to correctly navigate the file structure because the length is defined as the number of bytes.</li>
+                            <li>
+                                ADI Files produced by ASCII only software will work correctly with software implementing ADIJ.
+                                This meets the ADIF forward compatibility guarantee.
+                            </li>
+                            <li>
+                                New, UTF-8 Files ingested by older software may display some strings incorrectly.
+                                They will, however, be able to correctly navigate the file structure because the length is defined as the number of bytes.
+                            </li>
                         </ul>
                     </li>
                 </ul>
