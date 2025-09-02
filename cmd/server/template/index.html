@@ -43,13 +43,9 @@
 
                 <h2>1. Overview</h2>
                 <p>
-                    ADIF as JSON (ADIJ) is a proposed modernization of the Amateur Data Interchange Format (ADIF) using
-                    JSON structure.
-                    This format aims to maintain interoperability with existing ADIF data while providing better
-                    integration with modern software development practices.
-                    The new .adij file format strictly adheres to the <a href="https://www.json.org/">JSON</a> / <a
-                        href="https://www.ecma-international.org/publications-and-standards/standards/ecma-404/">ECMA-404</a>
-                    specification.
+                    ADIF as JSON (ADIJ) is a proposed modernization of the Amateur Data Interchange Format (ADIF) using JSON structure.
+                    This format aims to maintain interoperability with existing ADIF data while providing better integration with modern software development practices.
+                    The new .adij file format strictly adheres to the <a href="https://www.json.org/">JSON</a> / <a href="https://www.ecma-international.org/publications-and-standards/standards/ecma-404/">ECMA-404</a> specification.
                 </p>
 
                 <h2>2. Specification</h2>
@@ -80,10 +76,8 @@
                 <h3>2.3 Character Encoding</h3>
                 <ul>
                     <li>The JSON standard requires UTF-8 encoding.</li>
-                    <li>For backward compatability, when converting ADIJ to ADI, field lengths MUST be measured in
-                        bytes, not characters/runes to avoid backward compatibility issues.</li>
-                    <li>The use of _INTL fields is deprecated in favor of encouraging UTF-8 encoding in the
-                        corresponding non _INTL field.</li>
+                    <li>For backward compatability, when converting ADIJ to ADI, field lengths MUST be measured in bytes, not characters/runes to avoid backward compatibility issues.</li>
+                    <li>The use of _INTL fields is deprecated in favor of encouraging UTF-8 encoding in the corresponding non _INTL field.</li>
                 </ul>
 
                 <h3>2.4 Media Types</h3>
@@ -101,16 +95,11 @@
 
                 <hgroup></hgroup>
                 <h2>5. A Bridge Too Far</h2>
-                <small><a href="https://www.adif.org/315/ADIF_315.htm#Upward_Compatibility">Policy II.A</a>: From one
-                    version of ADIF to the next, Data Types, Enumerations, Fields, and Formats shall be upwardly
-                    compatible, meaning that an ADIF file compliant with ADIF version N will comply with any future ADIF
-                    version M where M>N. </small>
+                <small><a href="https://www.adif.org/315/ADIF_315.htm#Upward_Compatibility">Policy II.A</a>: From one version of ADIF to the next, Data Types, Enumerations, Fields, and Formats shall be upwardly compatible, meaning that an ADIF file compliant with ADIF version N will comply with any future ADIF version M where M>N. </small>
                 </hgroup>
                 <ul>
-                    <li>It is further proposed that the ADIF group depreciate the ADX file format. It is unloved and
-                        rarely used.</li>
-                    <li>It is further proposed that the ADIF group depreciate USERDEFn. ADIF is a data transfer
-                        standard, not a database.</li>
+                    <li>It is further proposed that the ADIF group depreciate the ADX file format. It is rarely used.</li>
+                    <li>It is further proposed that the ADIF group depreciate USERDEFn. ADIF is best viewed as a data transfer standard, not a database.</li>
                 </ul>
             </article>
         </details>
@@ -126,7 +115,7 @@
       "TIME_ON": "201506",
       "BAND": "40M",
       "MODE": "SSB",
-      "MY_POTA_REF", "US-0817,US-4566,US-4576,US-4573,US-4578@US-WY"
+      "MY_POTA_REF": "US-0817,US-4566,US-4576,US-4573,US-4578@US-WY"
     }
   ]
 }
@@ -145,7 +134,7 @@
       "TIME_ON": "201506",
       "BAND": "40M",
       "MODE": "SSB",
-      "MY_POTA_REF", "US-0817,US-4566,US-4576,US-4573,US-4578@US-WY"
+      "MY_POTA_REF": "US-0817,US-4566,US-4576,US-4573,US-4578@US-WY"
     },
     {
       "CALL": "K9CTS",
