@@ -58,11 +58,12 @@
                     </li>
                     <li>The document MUST be a single JSON object containing:
                         <ul>
-                            <li>An optional "HEADER" object</li>
-                            <li>A required "RECORDS" array of objects</li>
+                            <li>An optional "HEADER" record object</li>
+                            <li>A required "RECORDS" array of record objects</li>
                         </ul>
                     </li>
-                    <li>Each record in the "RECORDS" array MUST be a JSON object containing at least one field</li>
+                    <li>A record is a json object containing one or more properties.</li>
+                    <li>Each record in the "RECORDS" array MUST be a JSON object containing at least one property (representing an ADIF field)</li>
                     <li>All values MUST be JSON strings (no numbers, booleans, null, or nested objects/arrays)</li>
                 </ul>
 
@@ -233,8 +234,39 @@
                     </li>
                 </ul>
             </article>
+        </details>
+        <details>
+            <summary role="button" class="secondary">FAQ</summary>
             <article>
-                <summary>Critical Analysis</summary>
+                <summary>Frequently Asked Questions</summary>
+                <ul>
+                    <li>Why choose UTF-8?
+                        <ul>
+                            <li>ASCII is forward compatible with UTF-8.</li>
+                            <li>ADIF supports UTF-8 in XML documents.</li>
+                            <li>The JSON RFC requires the use of UTF.</li>
+                        </ul>
+                    </li>
+                    <li>Why are all values stored as strings instead of being strongly typed?
+                        <ul>
+                            <li>ADIJ aims to replace the ADI data structures, which represent all data as ASCII strings.</li>
+                            <li>This proposal aims to make converting between ADI and ADIJ seemless.</li>
+                        </ul>
+                    </li>
+                    <li>Why doesn't ADIJ allow explicit data type definitions?
+                        <ul>
+                            <li>The type of the data can be inferred from the field name.</li>
+                            <li>For example, CALL is always an ADIF "String"</li>
+                            <li>For example, Frequency is always an ADIF "Number"</li>
+                            <li>Likewise, APP_ fields rarely declare their data type and expect the processing program to know what to do if the program is aware of the APP_ field.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </article>
+        </details>
+        <details>
+            <summary>Critical Analysis</summary>
+            <article>
                 <p>
                     This section contains links to blogs and articles that provide analysis and feedback on the ADIF
                     format.
