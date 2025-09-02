@@ -261,6 +261,16 @@
                             <li>Likewise, APP_ fields rarely declare their data type and expect the processing program to know what to do if the program is aware of the APP_ field.</li>
                         </ul>
                     </li>
+                    <li>Why should we depreciate the _INTL fields?
+                        <ul>
+                            <li>Removing _INTL fields makes converting to/from ADI/ADIJ simple.</li>
+                            <li>ADIF has no backwards compatability guarantee. It only has a forward compatability guarantee.</li>
+                            <li>ADIF has a long history of depreciating fields that have lost their relevance.</li>
+                            <li>All modern programming languages support UTF-8</li>
+                            <li>ADI Files produced by ASCII only software will work correctly with software implementing ADIJ. This meets the ADIF forward compatibility guarantee.</li>
+                            <li>New, UTF-8 Files ingested by older software may display some strings incorrectly. They will be able to correctly navigate the file structure because the lenght will be defined as the number of bytes.</li>
+                        </ul>
+                    </li>
                 </ul>
             </article>
         </details>
