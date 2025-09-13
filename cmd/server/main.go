@@ -13,7 +13,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/hamradiolog-net/adif/v4"
+	"github.com/hamradiolog-net/adif/v5"
 )
 
 //go:embed static
