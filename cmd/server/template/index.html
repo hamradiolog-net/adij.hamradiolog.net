@@ -239,7 +239,7 @@
             <summary role="button" class="secondary">FAQ</summary>
             <article>
                 <summary>Frequently Asked Questions</summary>
-                <ul>
+                <ol>
                     <li>Why choose UTF-8?
                         <ul>
                             <li>
@@ -259,6 +259,8 @@
                     </li>
                     <li>Why are all values stored as strings instead of being strongly typed?
                         <ul>
+                            <li>It is impossible to know which future fields will be added to the specification.</li>
+                            <li>This makes converting to / from ADI lossless regardless of what version of the ADIJ specification is used.</li>
                             <li>ADIJ aims to replace the ADI data structures, which represent all data as ASCII strings.</li>
                             <li>This proposal aims to make converting between ADI and ADIJ seemless.</li>
                         </ul>
@@ -302,7 +304,7 @@
                             </li>
                         </ul>
                     </li>
-                </ul>
+                </ol>
             </article>
         </details>
         <details>
