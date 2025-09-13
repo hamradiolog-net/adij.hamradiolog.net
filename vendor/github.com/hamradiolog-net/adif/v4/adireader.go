@@ -7,10 +7,10 @@ import (
 	"strings"
 	"unsafe"
 
-	"github.com/hamradiolog-net/spec/v6/adifield"
+	"github.com/hamradiolog-net/adif-spec/v6/adifield"
 )
 
-var _ ADIFRecordReader = (*adiReader)(nil)
+var _ ADIFReader = (*adiReader)(nil) // Implements ADIFReader
 
 const (
 	// 1MB - this is the maximum size of a field value that we will accept.
@@ -42,16 +42,16 @@ type adiReader struct {
 
 // NewADIReader returns an ADIFReader that can parse ADIF *.adi formatted records.
 // If skipHeader is true, Next() will not return the header record if it exists.
-// This is a streaming parser that processes the input as it is read, using minimal memory.
-func NewADIReader(r io.Reader, skipHeader bool) *adiReader {
+func NewADIReader(r io.Reader, skipHeader bool) ADIFReader {
 	br, ok := r.(*bufio.Reader)
 	if !ok {
 		br = bufio.NewReader(r)
 	}
 
 	p := &adiReader{
-		r:          br,
-		skipHeader: skipHeader,
+		r:                 br,
+		skipHeader:        skipHeader,
+		preAllocateFields: 8,
 	}
 	p.appFieldMap = make(map[string]adifield.ADIField, 128)
 
@@ -60,64 +60,69 @@ func NewADIReader(r io.Reader, skipHeader bool) *adiReader {
 
 // Next reads and returns the next Record.
 // It returns io.EOF when no more records are available.
-func (p *adiReader) Next() (ADIFRecord, error) {
-	result := NewADIRecordWithCapacity(p.preAllocateFields)
+func (p *adiReader) Next() (Record, bool, int64, error) {
+	result := NewRecordWithCapacity(p.preAllocateFields)
+	var n int64
 	for {
 		// Find the start of the next adi field
-		err := p.discardUntilLessThan()
+		c, err := p.discardUntilLessThan()
+		n += c
 		if err != nil {
-			return result, err
+			return result, false, n, err
 		}
 
-		field, value, err := p.parseOneField()
+		field, value, c, err := p.parseOneField()
+		n += c
 		if err != nil {
-			return result, err
+			return result, false, n, err
 		}
 
 		switch field {
 		case adifield.EOH:
-			if len(result.r) > 0 {
+			if len(result) > 0 {
 				if !p.skipHeader {
-					result.isHeader = true
-					return result, nil
+					return result, true, n, nil
 				}
 
 				// we are skipping returning the EOH record (if any)
 				// reset to prepare to read the next record
-				clear(result.r)
+				result.Reset()
 			}
 			continue
 		case adifield.EOR:
-			if len(result.r) > 0 {
-				if len(result.r) > p.preAllocateFields {
-					p.preAllocateFields = len(result.r)
+			if len(result) > 0 {
+				if len(result) > p.preAllocateFields {
+					p.preAllocateFields = len(result)
 				}
-				return result, nil
+				return result, false, n, nil
 			}
 			// we know record is empty... no need to reset it
 			continue
 		}
 
 		// n.b. if a duplicate field is found, it will replace the previous value
-		result.r[field] = value
+		result[field] = value
 	}
 }
 
-// parseOneField reads the next field definition and returns the field name and value
+// parseOneField reads the next field definition and returns the field name, value, and the number of bytes read.
 //
 // It is heavily optimized for speed and memory use.
 // Currently, It can tripple the speed of go's stdlib JSON marshaling for similar data.
-func (p *adiReader) parseOneField() (field adifield.ADIField, value string, err error) {
+//
+// Future Plans: I would like to take a look at using simd directly.
+// However, the current implementation IS attempting to take advantage of the standard library's existing simd capabilities.
+func (p *adiReader) parseOneField() (field adifield.ADIField, value string, n int64, err error) {
 	// Step 1: Read in the entire data specifier "<fieldname:length:...>" and remove the trailing '>'
-	volatileSpecifier, err := p.readDataSpecifierVolatile()
+	volatileSpecifier, n, err := p.readDataSpecifierVolatile()
 	if err != nil {
-		return "", "", err
+		return "", "", n, err
 	}
 
 	// Step 2: Parse Field Name
 	volatileField, volatileLength, foundFirstColon := bytes.Cut(volatileSpecifier, []byte(":"))
 	if len(volatileField) == 0 {
-		return "", "", ErrAdiReaderMalformedADI // field name is empty
+		return "", "", n, ErrMalformedADI // field name is empty
 	}
 
 	// Step 2.1: field name string interning - reduce memory allocations
@@ -146,7 +151,7 @@ func (p *adiReader) parseOneField() (field adifield.ADIField, value string, err 
 		}
 		if err != nil {
 			// handle data length parsing errors
-			return field, "", err
+			return field, "", n, err
 		}
 
 		// Step 4: Read the field value (if any)
@@ -160,18 +165,19 @@ func (p *adiReader) parseOneField() (field adifield.ADIField, value string, err 
 
 			var c int
 			c, err = io.ReadFull(p.r, p.bufValue) // this will overwrite all of the 'volatile' variables (see above)
+			n += int64(c)
 			value = string(p.bufValue[:c])
 			if err == io.EOF {
-				return field, value, ErrAdiReaderMalformedADI
+				return field, value, n, ErrMalformedADI
 			}
-			return field, value, err
+			return field, value, n, err
 		}
 	}
 
-	return field, "", nil
+	return field, "", n, nil
 }
 
-// readDataSpecifierVolatile reads and returns the next data specifier as a byte slice, and any error encountered.
+// readDataSpecifierVolatile reads and returns the next data specifier as a byte slice, the number of bytes read, and any error encountered.
 // The trailing '>' is removed from the returned byte slice.
 //
 // IMPORTANT:
@@ -184,12 +190,13 @@ func (p *adiReader) parseOneField() (field adifield.ADIField, value string, err 
 //	followed by data D of length L:
 //
 //	<F:L:T>
-func (p *adiReader) readDataSpecifierVolatile() (volatileSpecifier []byte, err error) {
+func (p *adiReader) readDataSpecifierVolatile() (volatileSpecifier []byte, n int64, err error) {
 	// If ReadSlice returns bufio.ErrBufferFull, accumulator will contain ALL of the bytes read.
 	// In most cases, accumulator will be null because we won't hit the bufio.ErrBufferFull condition.
 	var accumulator []byte
 	for {
 		volatileSpecifier, err = p.r.ReadSlice('>')
+		n += int64(len(volatileSpecifier))
 		if err == nil {
 			if accumulator != nil {
 				// We've found '>' and have accumulated some bytes.
@@ -205,27 +212,29 @@ func (p *adiReader) readDataSpecifierVolatile() (volatileSpecifier []byte, err e
 		}
 
 		if err == io.EOF {
-			return volatileSpecifier, ErrAdiReaderMalformedADI
+			return volatileSpecifier, n, ErrMalformedADI
 		}
 
-		return volatileSpecifier, err
+		return volatileSpecifier, n, err
 	}
 	volatileSpecifier = volatileSpecifier[:len(volatileSpecifier)-1] // remove the trailing '>'
-	return volatileSpecifier, nil
+	return volatileSpecifier, n, nil
 }
 
-// discardUntilLessThan reads until it finds the '<' character
-func (p *adiReader) discardUntilLessThan() (err error) {
+// discardUntilLessThan reads until it finds the '<' character, returning the number of bytes read
+func (p *adiReader) discardUntilLessThan() (n int64, err error) {
 	for {
-		_, err = p.r.ReadSlice('<')
+		var b []byte
+		b, err = p.r.ReadSlice('<')
+		n += int64(len(b))
 
 		switch err {
 		case nil:
-			return nil
+			return n, nil
 		case bufio.ErrBufferFull:
 			continue
 		default:
-			return err
+			return n, err
 		}
 	}
 }
@@ -233,12 +242,12 @@ func (p *adiReader) discardUntilLessThan() (err error) {
 // parseDataLength is an optimized replacement for strconv.Atoi.
 func parseDataLength(data []byte) (value int, err error) {
 	if len(data) == 0 {
-		return 0, ErrAdiReaderInvalidFieldLength
+		return 0, ErrInvalidFieldLength
 	}
 
 	for _, b := range data {
 		if b < '0' || b > '9' {
-			return 0, ErrAdiReaderInvalidFieldLength
+			return 0, ErrInvalidFieldLength
 		}
 
 		// Parse digit, avoiding string allocations
@@ -246,7 +255,7 @@ func parseDataLength(data []byte) (value int, err error) {
 
 		// Check for overflow or too big
 		if newVal < value || newVal > maxADIReaderDataSize {
-			return 0, ErrAdiReaderInvalidFieldLength
+			return 0, ErrInvalidFieldLength
 		}
 
 		value = newVal

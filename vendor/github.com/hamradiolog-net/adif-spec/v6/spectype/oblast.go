@@ -5,10 +5,10 @@ import (
 	"strconv"
 )
 
-// Integer is an integer stored in the ADIF JSON specification.
-type Integer int
+// Oblast is an integer stored in the ADIF JSON specification.
+type Oblast int
 
-func (i *Integer) UnmarshalJSON(data []byte) error {
+func (i *Oblast) UnmarshalJSON(data []byte) error {
 	var val string
 	err := json.Unmarshal(data, &val)
 	if err != nil {
@@ -19,7 +19,11 @@ func (i *Integer) UnmarshalJSON(data []byte) error {
 	if err != nil {
 		return err
 	}
-	*i = Integer(result)
+	*i = Oblast(result)
 
 	return nil
+}
+
+func (i Oblast) ToInt() int {
+	return int(i)
 }
