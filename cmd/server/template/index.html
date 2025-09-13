@@ -271,6 +271,14 @@
                             <li>Likewise, APP_ fields rarely declare their data type and expect the processing program to know what to do if the program is aware of the APP_ field.</li>
                         </ul>
                     </li>
+                    <li>Why should we depreciate USERDEFn
+                        <ul>
+                            <li>USERDEFn is rarely used</li>
+                            <li>Most applications emit APP_ fields without the data type specifier.</li>
+                            <li>Most applications ingesting APP_fields are hard-coded to expect the data in a specific format.</li>
+
+                        </ul>
+                    </li>
                     <li>Why should we depreciate the _INTL fields?
                         <ul>
                             <li>
