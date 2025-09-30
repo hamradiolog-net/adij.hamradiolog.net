@@ -56,14 +56,14 @@ ARG VERSION_STATICCHECK
 ARG VERSION_GOCRITIC
 
 USER root:root
-RUN apt-get update && apt-get upgrade -y && apt-get autoremove -y && apt-get autoclean && \
-    apt-get install -y                                                          \
-    fish                                                                        \
-    graphviz                                                                    \
-    ripgrep                                                                     \
-    sudo                                                                        \
-    vim-nox                                                                   &&\
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get upgrade -y && apt-get autoremove -y && apt-get autoclean &&   \
+    apt-get install -y                                                                      \
+    fish                                                                                    \
+    graphviz                                                                                \
+    ripgrep                                                                                 \
+    sudo                                                                                    \
+    vim-nox                                                                                 \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN \
     chsh -s /usr/bin/fish ${USER}                                           &&  \
@@ -74,8 +74,7 @@ RUN \
     chown -R ${USER}:${GID} /home/${USER}/.config
 
 USER ${UID}:${GID}
-RUN --mount=type=cache,target=${HOME}/go/pkg/mod,uid=${UID},gid=${GID}              \
-    --mount=type=cache,target=${XDG_CACHE_HOME}/go-build,uid=${UID},gid=${GID}      \
+RUN                                                                                 \
     go install github.com/go-delve/delve/cmd/dlv@${VERSION_DELVE}               &&  \
     go install golang.org/x/tools/gopls@${VERSION_GOPLS}                        &&  \
     go install golang.org/x/tools/cmd/goimports@${VERSION_GOIMPORTS}            &&  \
