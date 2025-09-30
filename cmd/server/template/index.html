@@ -14,7 +14,7 @@
         <header>
             <hgroup>
                 <h1>ADIF as JSON - A Proposal</h1>
-                <h2>ADIJ Draft Proposal v2025-09-30.0</h2>
+                <h2>ADIJ Draft Proposal v2025-09-30.1</h2>
             </hgroup>
         </header>
         <p>Lets improve the standard so that it doesn't require a PhD just to parse a log file.
@@ -38,7 +38,6 @@
             <article>
                 <header>
                     <h1>ADIJ Specification</h1>
-                    <small>Draft Proposal v1.0</small>
                 </header>
 
                 <h2>1. Overview</h2>
@@ -58,12 +57,12 @@
                     </li>
                     <li>The document MUST be a single JSON object containing:
                         <ul>
-                            <li>An optional "HEADER" record object</li>
-                            <li>A required "RECORDS" array of record objects</li>
+                            <li>An optional "header" record object</li>
+                            <li>A required "records" array of record objects</li>
                         </ul>
                     </li>
                     <li>A record is a json object containing one or more properties.</li>
-                    <li>Each record in the "RECORDS" array MUST be a JSON object containing at least one property (representing an ADIF field)</li>
+                    <li>Each record in the "records" array MUST be a JSON object containing at least one property (representing an ADIF field)</li>
                     <li>All values MUST be JSON strings (no numbers, booleans, null, or nested objects/arrays)</li>
                 </ul>
 
