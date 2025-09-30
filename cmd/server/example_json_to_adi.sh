@@ -1,10 +1,10 @@
 #!/usr/bin/env sh
 
 curl -v --location 'localhost:8080/' \
---header 'Content-Type: application/json' \
+--header 'Content-Type: application/x-adif-json' \
 --data '{
     "header": {
-        "ADIF_VER": "3.1.5"
+        "adif_ver": "3.1.5"
     },
     "records": [
         {
