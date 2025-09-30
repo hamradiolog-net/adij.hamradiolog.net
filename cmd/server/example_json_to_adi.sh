@@ -8,12 +8,12 @@ curl -v --location 'localhost:8080/' \
     },
     "records": [
         {
-            "BAND": "40m",
-            "CALL": "K9CTS"
+            "band": "40m",
+            "call": "K9CTS"
         },
         {
-            "BAND": "40m",
-            "CALL": "W9PVA"
+            "band": "40m",
+            "call": "W9PVA"
         }
     ]
 }'

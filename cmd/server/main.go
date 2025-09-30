@@ -2,7 +2,6 @@ package main
 
 import (
 	"embed"
-	"encoding/json"
 	"flag"
 	"fmt"
 	"html/template"
@@ -13,7 +12,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/hamradiolog-net/adif/v4"
+	"github.com/farmergreg/adif/v5"
 )
 
 //go:embed static
@@ -92,6 +91,7 @@ func handleMulipartFormData(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error reading input file", http.StatusBadRequest)
 		return
 	}
+
 	defer file.Close()
 
 	ext := strings.ToLower(path.Ext(handler.Filename))
@@ -113,31 +113,48 @@ func handleMulipartFormData(w http.ResponseWriter, r *http.Request) {
 }
 
 func convertAdi(w http.ResponseWriter, r io.Reader, beforeWriteCallback func(w http.ResponseWriter)) {
-	doc := adif.NewDocument()
-	if _, err := doc.ReadFrom(r); err != nil {
-		http.Error(w, "unable to read adi input", http.StatusBadRequest)
-		return
+	adiReader := adif.NewADIRecordReader(r, false)
+	jsonWriter := adif.NewJSONWriter(w, "  ")
+
+	for {
+		record, isHeader, err := adiReader.Next()
+		if err == io.EOF {
+			break
+		}
+		err = jsonWriter.Write(record, isHeader)
+		if err != nil {
+			http.Error(w, "unable to create json output", http.StatusInternalServerError)
+			return
+		}
 	}
 
 	beforeWriteCallback(w)
-	encoder := json.NewEncoder(w)
-	encoder.SetIndent("", "  ")
-	if err := encoder.Encode(doc); err != nil {
+	err := jsonWriter.Close()
+
+	if err != nil {
 		http.Error(w, "unable to create json output", http.StatusInternalServerError)
 		return
 	}
 }
 
 func convertAdij(w http.ResponseWriter, r io.Reader, beforeWriteCallback func(w http.ResponseWriter)) {
-	var doc adif.Document
-	if err := json.NewDecoder(r).Decode(&doc); err != nil {
+	jsonReader, err := adif.NewADIJReader(r, false)
+	if err != nil {
 		http.Error(w, "invalid json input", http.StatusBadRequest)
 		return
 	}
 
 	beforeWriteCallback(w)
-	if _, err := doc.WriteTo(w); err != nil {
-		http.Error(w, "unable to write adi output", http.StatusInternalServerError)
-		return
+	var adiWriter = adif.NewADIRecordWriter(w)
+	for {
+		record, isHeader, err := jsonReader.Next()
+		if err == io.EOF {
+			break
+		}
+		err = adiWriter.Write(record, isHeader)
+		if err != nil {
+			http.Error(w, "unable to write adi output", http.StatusInternalServerError)
+			return
+		}
 	}
 }

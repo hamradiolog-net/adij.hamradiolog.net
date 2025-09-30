@@ -1,4 +1,4 @@
-github.com/hamradiolog-net/adif-spec/v6 v6.0.0-beta.7 h1:txDmubWKfx+9Ha6XDlnqTNzHFMuEBpQ9PwcV8Oe1LAI=
-github.com/hamradiolog-net/adif-spec/v6 v6.0.0-beta.7/go.mod h1:XAAslZANuhEuLWOv08GbKI0hXEcj+huIXO5su7YWlgA=
-github.com/hamradiolog-net/adif/v4 v4.0.7 h1:qYLMYTSop945ij273B0lVSy8hacDj1ztwWcibpfieEI=
-github.com/hamradiolog-net/adif/v4 v4.0.7/go.mod h1:r+WEjhXqpaHrQY4KxNZthHL3mAEPu0xItMdjrNadYLc=
+github.com/farmergreg/adif/v5 v5.0.0-beta.15 h1:KVQUDuikrLMWFhCYK7BJ0poUzMeSZBcM9FoSDitc/GY=
+github.com/farmergreg/adif/v5 v5.0.0-beta.15/go.mod h1:/PRZE7TzWutkUjVg4hFNuj4sbRlSA/ZuXhPmAOa+Ims=
+github.com/farmergreg/spec/v6 v6.0.0-beta.29 h1:Xo80K+Sz6aq+sxmc5j/nzqrFKXx8aS59IJDToZR/h58=
+github.com/farmergreg/spec/v6 v6.0.0-beta.29/go.mod h1:SPPWP5cXZtz1f4y/Ui6R5K1ZEMgJkcVA0AEt7/IfH+I=

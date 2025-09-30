@@ -15,5 +15,5 @@ Features:
 Related:
 
 - [World's Fastest ADIF Parser](https://github.com/hamradiolog-net/adif-parser)
-- [Go ADIF Specification](https://github.com/hamradiolog-net/adif-spec/)
+- [Go ADIF Specification](https://github.com/farmergreg/spec/)
 - [hamradiolog-net/adif-benchmark](https://github.com/hamradiolog-net/adif-benchmark): ADIF Parsing Benchmarks
