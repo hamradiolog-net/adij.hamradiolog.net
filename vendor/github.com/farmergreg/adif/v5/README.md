@@ -1,11 +1,11 @@
-# ⚡ World's Fastest ADI Parser for Go
+# ⚡ High Performance ADI Parser for Go
 
 This library provides high-performance processing of [ADIF](https://adif.org/) (Amateur Data Interchange Format) ADI files used for ham radio logs.
 It's idiomatic, developer-friendly API seamlessly integrates with your codebase and the go standard library.
 
 [![Tests](https://github.com/farmergreg/adif/actions/workflows/test.yml/badge.svg)](https://github.com/farmergreg/adif/actions/workflows/test.yml)
-[![Go Report Card](https://goreportcard.com/badge/github.com/farmergreg/adif)](https://goreportcard.com/report/github.com/farmergreg/adif)
-[![Go Reference](https://pkg.go.dev/badge/github.com/farmergreg/adif.svg)](https://pkg.go.dev/github.com/farmergreg/adif)
+[![Go Report Card](https://goreportcard.com/badge/github.com/farmergreg/adif/v5)](https://goreportcard.com/report/github.com/farmergreg/adif/v5)
+[![Go Reference](https://pkg.go.dev/badge/github.com/farmergreg/adif/v5.svg)](https://pkg.go.dev/github.com/farmergreg/adif/v5)
 [![Go Version](https://img.shields.io/github/go-mod/go-version/farmergreg/adif)](https://github.com/farmergreg/adif/blob/main/go.mod)
 [![License](https://img.shields.io/github/license/farmergreg/adif)](https://github.com/farmergreg/adif/blob/main/LICENSE)
 
@@ -13,8 +13,8 @@ It's idiomatic, developer-friendly API seamlessly integrates with your codebase 
 
 - 🔬 **Tested**: 100% test coverage!
 - 🔧 **Developer Friendly**: Clean, idiomatic, mock friendly interfaces
-- 🚀 **Blazing Fast**: 2x-20x faster than other ADI libraries
-- 💡 **Memory Efficient**: Uses 2x less memory and makes 1400x fewer allocations than other libraries.
+- 🚀 **Blazing Fast**: 2.4x-20x faster than [other libraries](https://github.com/farmergreg/adif-benchmark)
+- 💡 **Memory Efficient**: Uses 2.2x less memory and makes 3.8 fewer allocations than the nearest competitor.
 
 ## 🚀 Quick Start
 
@@ -29,6 +29,9 @@ go get github.com/farmergreg/adif/v5
 ## Benchmarks
 
 Please see the [Go ADIF Parser Benchmarks](https://github.com/farmergreg/adif-benchmark) project for benchmarks.
+
+TLDR, this library processes ADI data 3x faster than the go standard library can process the same data in json format.
+This library is 2.4x faster than the nearest ADI parser.
 
 ## 🔧 Technical Deep Dive (ADI Parser)
 

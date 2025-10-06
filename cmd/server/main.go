@@ -113,15 +113,19 @@ func handleMulipartFormData(w http.ResponseWriter, r *http.Request) {
 }
 
 func convertAdi(w http.ResponseWriter, r io.Reader, beforeWriteCallback func(w http.ResponseWriter)) {
-	adiReader := adif.NewADIRecordReader(r, false)
-	jsonWriter := adif.NewJSONRecordWriter(w, "  ")
+	adiReader := adif.NewADIDocumentReader(r, false)
+	jsonWriter := adif.NewJSONDocumentWriter(w, "  ")
 
 	for {
 		record, isHeader, err := adiReader.Next()
 		if err == io.EOF {
 			break
 		}
-		err = jsonWriter.Write(record, isHeader)
+		if isHeader {
+			err = jsonWriter.WriteHeader(record)
+		} else {
+			err = jsonWriter.WriteRecord(record)
+		}
 		if err != nil {
 			http.Error(w, "unable to create json output", http.StatusInternalServerError)
 			return
@@ -138,20 +142,24 @@ func convertAdi(w http.ResponseWriter, r io.Reader, beforeWriteCallback func(w h
 }
 
 func convertAdij(w http.ResponseWriter, r io.Reader, beforeWriteCallback func(w http.ResponseWriter)) {
-	jsonReader, err := adif.NewJSONRecordReader(r, false)
+	jsonReader, err := adif.NewJSONDocumentReader(r, false)
 	if err != nil {
 		http.Error(w, "invalid json input", http.StatusBadRequest)
 		return
 	}
 
 	beforeWriteCallback(w)
-	var adiWriter = adif.NewADIRecordWriter(w)
+	var adiWriter = adif.NewADIDocumentWriter(w)
 	for {
 		record, isHeader, err := jsonReader.Next()
 		if err == io.EOF {
 			break
 		}
-		err = adiWriter.Write(record, isHeader)
+		if isHeader {
+			err = adiWriter.WriteHeader(record)
+		} else {
+			err = adiWriter.WriteRecord(record)
+		}
 		if err != nil {
 			http.Error(w, "unable to write adi output", http.StatusInternalServerError)
 			return

@@ -68,7 +68,7 @@
 
                 <h3>2.2 Field Requirements</h3>
                 <ul>
-                    <li>All field names (keys) MUST be lowercase. (json keys are case-sensitive) </li>
+                    <li>All field names (keys) MUST be UPPERCASE. (json keys are case-sensitive) </li>
                     <li>Field names MUST follow all ADIF naming conventions</li>
                     <li>Field values MUST be strings, following JSON string encoding rules</li>
                 </ul>
@@ -99,16 +99,16 @@
             <article>
                 <h3>Sample 1</h3>
                 n.b. JSON keys are case sensitive.
-                All keys are lowercase by convention when writing adif as json.
+                All keys are UPPERCASE by convention when writing adif as json.
                 <pre>{
-  "records": [
+  "RECORDS": [
     {
-      "call": "W9PVA",
-      "qso_date": "20250805",
-      "time_on": "201506",
-      "band": "40m",
-      "mode": "ssb",
-      "my_pota_ref": "us-0817,us-4566,us-4576,us-4573,us-4578@us-wy"
+      "CALL": "W9PVA",
+      "QSO_DATE": "20250805",
+      "TIME_ON": "201506",
+      "BAND": "40M",
+      "MODE": "SSB",
+      "MY_POTA_REF": "US-0817,US-4566,US-4576,US-4573,US-4578@US-WY"
     }
   ]
 }
@@ -116,27 +116,27 @@
 </pre>
                 <h3>Sample 2</h3>
                 n.b. JSON keys are case sensitive.
-                All keys are lowercase by convention when writing adif as json.
+                All keys are UPPERCASE by convention when writing adif as json.
                 <pre>{
-  "header": {
-    "adif_ver": "3.1.5",
-    "programid": "K9CTS ADIF as JSON (ADIJ) DEMO"
+  "HEADER": {
+    "ADIF_VER": "3.1.5",
+    "PROGRAMID": "K9CTS ADIF AS JSON (ADIJ) DEMO"
   },
-  "records": [
+  "RECORDS": [
     {
-      "call": "W9PVA",
-      "qso_date": "20250805",
-      "time_on": "201506",
-      "band": "40m",
-      "mode": "ssb",
-      "my_pota_ref": "us-0817,us-4566,us-4576,us-4573,us-4578@us-wy"
+      "CALL": "W9PVA",
+      "QSO_DATE": "20250805",
+      "TIME_ON": "201506",
+      "BAND": "40M",
+      "MODE": "SSB",
+      "MY_POTA_REF": "US-0817,US-4566,US-4576,US-4573,US-4578@US-WY"
     },
     {
-      "call": "K9CTS",
-      "qso_date": "20250806",
-      "time_on": "202522",
-      "band": "40m",
-      "mode": "cw"
+      "CALL": "K9CTS",
+      "QSO_DATE": "20250806",
+      "TIME_ON": "202522",
+      "BAND": "40M",
+      "MODE": "CW"
     }
   ]
 }

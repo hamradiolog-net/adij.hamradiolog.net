@@ -3,17 +3,17 @@
 curl -v --location 'localhost:8080/' \
 --header 'Content-Type: application/x-adif-json' \
 --data '{
-    "header": {
-        "adif_ver": "3.1.5"
+    "HEADER": {
+        "ADIF_VER": "3.1.5"
     },
-    "records": [
+    "RECORDS": [
         {
-            "band": "40m",
-            "call": "K9CTS"
+            "BAND": "40M",
+            "CALL": "K9CTS"
         },
         {
-            "band": "40m",
-            "call": "W9PVA"
+            "BAND": "40M",
+            "CALL": "W9PVA"
         }
     ]
 }'

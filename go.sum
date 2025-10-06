@@ -1,4 +1,4 @@
-github.com/farmergreg/adif/v5 v5.0.0-beta.18 h1:vkJFlqtj+qiZ5ffMthP2pmLJjCqmxosKfYxxuplB34I=
-github.com/farmergreg/adif/v5 v5.0.0-beta.18/go.mod h1:/PRZE7TzWutkUjVg4hFNuj4sbRlSA/ZuXhPmAOa+Ims=
-github.com/farmergreg/spec/v6 v6.0.0-beta.29 h1:Xo80K+Sz6aq+sxmc5j/nzqrFKXx8aS59IJDToZR/h58=
-github.com/farmergreg/spec/v6 v6.0.0-beta.29/go.mod h1:SPPWP5cXZtz1f4y/Ui6R5K1ZEMgJkcVA0AEt7/IfH+I=
+github.com/farmergreg/adif/v5 v5.0.0-beta.24 h1:03SxtDZ3lR7lDvseQ6DnEHspbV3pJZ6rMHn94tg0mhM=
+github.com/farmergreg/adif/v5 v5.0.0-beta.24/go.mod h1:OhUsKRiMKg9Ix17BA5tt3h5YPo0hkghG/iOY7OpUgRQ=
+github.com/farmergreg/spec/v6 v6.0.0-beta.33 h1:H6hsCerOM3JxgUBYYz0kt4fjp0J+Z0niN7W64ZHBVaU=
+github.com/farmergreg/spec/v6 v6.0.0-beta.33/go.mod h1:SPPWP5cXZtz1f4y/Ui6R5K1ZEMgJkcVA0AEt7/IfH+I=
