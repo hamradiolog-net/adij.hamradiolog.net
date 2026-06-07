@@ -2,6 +2,7 @@ package main
 
 import (
 	"embed"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"html/template"
@@ -113,56 +114,31 @@ func handleMulipartFormData(w http.ResponseWriter, r *http.Request) {
 }
 
 func convertAdi(w http.ResponseWriter, r io.Reader, beforeWriteCallback func(w http.ResponseWriter)) {
-	adiReader := adif.NewADIDocumentReader(r, false)
-	jsonWriter := adif.NewJSONDocumentWriter(w, "  ")
-
-	for {
-		record, isHeader, err := adiReader.Next()
-		if err == io.EOF {
-			break
-		}
-		if isHeader {
-			err = jsonWriter.WriteHeader(record)
-		} else {
-			err = jsonWriter.WriteRecord(record)
-		}
-		if err != nil {
-			http.Error(w, "unable to create json output", http.StatusInternalServerError)
-			return
-		}
+	doc := adif.NewDocument()
+	if _, err := doc.ReadFrom(r); err != nil {
+		http.Error(w, "unable to read adi input", http.StatusBadRequest)
+		return
 	}
 
 	beforeWriteCallback(w)
-	err := jsonWriter.Flush()
 
-	if err != nil {
-		http.Error(w, "unable to create json output", http.StatusInternalServerError)
-		return
+	enc := json.NewEncoder(w)
+	enc.SetIndent("", "  ")
+	if err := enc.Encode(doc); err != nil {
+		log.Printf("error encoding json output: %v", err)
 	}
 }
 
 func convertAdij(w http.ResponseWriter, r io.Reader, beforeWriteCallback func(w http.ResponseWriter)) {
-	jsonReader, err := adif.NewJSONDocumentReader(r, false)
-	if err != nil {
+	doc := adif.NewDocument()
+	if err := json.NewDecoder(r).Decode(doc); err != nil {
 		http.Error(w, "invalid json input", http.StatusBadRequest)
 		return
 	}
 
 	beforeWriteCallback(w)
-	var adiWriter = adif.NewADIDocumentWriter(w)
-	for {
-		record, isHeader, err := jsonReader.Next()
-		if err == io.EOF {
-			break
-		}
-		if isHeader {
-			err = adiWriter.WriteHeader(record)
-		} else {
-			err = adiWriter.WriteRecord(record)
-		}
-		if err != nil {
-			http.Error(w, "unable to write adi output", http.StatusInternalServerError)
-			return
-		}
+
+	if _, err := doc.WriteTo(w); err != nil {
+		log.Printf("error writing adi output: %v", err)
 	}
 }
