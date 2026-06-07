@@ -86,7 +86,7 @@ func handleSimpleApi(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleMulipartFormData(w http.ResponseWriter, r *http.Request) {
-	r.ParseMultipartForm(1024 * 256) // 256KiB
+	r.ParseMultipartForm(4 << 20) // 4 MiB — keeps typical ADIF files in memory
 	file, handler, err := r.FormFile("file")
 	if err != nil {
 		http.Error(w, "Error reading input file", http.StatusBadRequest)
